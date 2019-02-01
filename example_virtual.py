@@ -32,8 +32,6 @@ try:
             else:                              # exploit the info in the q-table
                 action = np.argmax(q[state])   # ...best known action
             next_state, reward, done = e.step(action)
-            if reward>0:
-                print('action', action, 'reward', reward)
             # update the q-table (see https://en.wikipedia.org/wiki/Q-learning)
             q[state][action] = (1-alpha)*q[state][action] + alpha*(reward+gamma*np.max(q[next_state]))
             state = next_state
