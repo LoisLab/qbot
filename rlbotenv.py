@@ -28,16 +28,16 @@ class RlBotEnv:
         else:
             self.obstacles = obstacles
         obs = self.bot.get_observation(self.obstacles)
-        self.min_distance = min(obs)                    # for use in first call to step()
-        return np.argmin(obs)                           # convert to discrete observation
+        self.min_distance = min(obs)      # for use in first call to step()
+        return np.argmin(obs)             # convert to discrete observation
 
     def step(self, action):
         self.iterations += 1
         self.bot.move(action)
         obs = self.bot.get_observation(self.obstacles)
-        if self.bot.changes_distance(action):  # ignore sensor-based changes
-            reward = self.min_distance-min(obs)    # reward = reduction in distance
-            self.min_distance = min(obs)       # for use in next call to step()
+        if self.bot.changes_distance(action):   # ignore sensor-based changes
+            reward = self.min_distance-min(obs) # reward = reduction in distance
+            self.min_distance = min(obs)        # for use in next call to step()
         else:
             reward = 0
         state = np.argmin(obs)                 # convert to discrete state
