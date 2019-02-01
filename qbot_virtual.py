@@ -32,6 +32,9 @@ class QvBot(QBot):
         self.n_heading %= self.turn_sectors
         self.heading = self.n_heading * (math.pi * 2.0 / self.turn_sectors)
 
+    def changes_distance(self, action):
+        return action == 0
+
     # distance to center point x,y of an obstacle
     def distance_to_ob(self, ob):
         return self.distance(ob.x,ob.y) - ob.radius
@@ -72,7 +75,8 @@ class QvBot(QBot):
 
     def get_observation(self, obstacles):
         ranges = []
-        for n in range(-self.sensor_sectors//2,self.sensor_sectors//2,1):
+        # remember: 5//2=2, but -5//2=-3, so loop needs a +1 to stay centered
+        for n in range(-self.sensor_sectors//2+1,self.sensor_sectors//2+1,1):
             min_range = self.sensor_range
             sensor_bearing = n * self.sensor_fov + self.heading
             sensor_bearing = sensor_bearing if sensor_bearing < math.pi*2 else sensor_bearing-math.pi*2
@@ -90,4 +94,4 @@ class QvBot(QBot):
         return 10.0
 
     def __str__(self):
-      return 'RlBot x={} y={} heading={}'.format(self.x, self.y, self.heading)
+      return 'QBot x={} y={} heading={}'.format(self.x, self.y, self.heading)

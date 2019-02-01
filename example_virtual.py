@@ -8,11 +8,11 @@ from renderer import Renderer
 #                                                                              #
 ################################################################################
 
-e = RlBotEnv(QvBot(sensor_sectors=12,degrees_per_sensor_sector=30.0,turn_sectors=8))
+e = RlBotEnv(QvBot(sensor_sectors=5,degrees_per_sensor_sector=22.5,turn_sectors=8))
 r = Renderer(100)
 
 # create the q-table
-q = np.random.rand(e.bot.observation_space(), e.bot.action_space())
+q = np.zeros((e.bot.observation_space(), e.bot.action_space()))
 
 # try changing these hyper-parameters...
 explore = 0.1   # exploration rate (odds of taking a random action)
@@ -32,10 +32,12 @@ try:
             else:                              # exploit the info in the q-table
                 action = np.argmax(q[state])   # ...best known action
             next_state, reward, done = e.step(action)
+            if reward>0:
+                print('action', action, 'reward', reward)
             # update the q-table (see https://en.wikipedia.org/wiki/Q-learning)
-            q[state][action] = (1-alpha) * q[state][action] + alpha * (reward + gamma * np.max(q[next_state]))
+            q[state][action] = (1-alpha)*q[state][action] + alpha*(reward+gamma*np.max(q[next_state]))
             state = next_state
-            r.render_step(e)
+            r.render_step(e.bot)
         print(n)
 
 except KeyboardInterrupt:

@@ -67,8 +67,8 @@ class Renderer:
             turtle.goto(n[0], n[1])
         self.render_reset_turtle(bot)
 
-    def render_step(self, environment, force=False):
+    def render_step(self, bot, force=False):
         if self.count % self.n == 0 or force:
-            turtle.setheading(environment.bot.heading)
+            turtle.setheading(bot.heading)
             turtle.pendown()
-            turtle.goto(environment.bot.x, environment.bot.y)
+            turtle.goto(bot.x, bot.y)

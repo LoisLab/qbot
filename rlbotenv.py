@@ -20,10 +20,13 @@ class RlBotEnv:
     def __init__(self, bot):
         self.bot = bot        # could be a physical or virtual robot
 
-    def reset(self, obstacle_count=0):
+    def reset(self, obstacle_count=0, obstacles=None):
         self.iterations = 0
         self.bot.reset()
-        self.obstacles = Obstacle.make_obstacles(obstacle_count)
+        if obstacles is None:
+            self.obstacles = Obstacle.make_obstacles(obstacle_count)
+        else:
+            self.obstacles = obstacles
         obs = self.bot.get_observation(self.obstacles)
         self.min_distance = min(obs)                    # for use in first call to step()
         return np.argmin(obs)                           # convert to discrete observation
@@ -32,8 +35,11 @@ class RlBotEnv:
         self.iterations += 1
         self.bot.move(action)
         obs = self.bot.get_observation(self.obstacles)
-        reward = self.min_distance-min(obs) # reward = reduction in distance
-        self.min_distance = min(obs)        # for use in next call to step()
-        state = np.argmin(obs)              # convert to discrete state
+        if self.bot.changes_distance(action):  # ignore sensor-based changes
+            reward = self.min_distance-min(obs)    # reward = reduction in distance
+            self.min_distance = min(obs)       # for use in next call to step()
+        else:
+            reward = 0
+        state = np.argmin(obs)                 # convert to discrete state
         done = min(obs) < self.bot.goal() or self.iterations > RlBotEnv.MAX_ITERATIONS
         return state, reward, done
