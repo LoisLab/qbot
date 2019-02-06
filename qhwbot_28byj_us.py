@@ -57,3 +57,6 @@ class QHwBot_28byj_us(QBot):
 
     def goal(self):
         return 100.0            # millimeters
+
+    def max_sensor_range(self):
+        return 3000   # 3 meters

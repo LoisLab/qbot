@@ -1,5 +1,4 @@
 import math
-import numpy as np
 from qbot import QBot
 
 ################################################################################
@@ -92,6 +91,9 @@ class QvBot(QBot):
 
     def goal(self):
         return 10.0
+
+    def max_sensor_range(self):
+        return self.sensor_range
 
     def __str__(self):
       return 'QBot x={} y={} heading={}'.format(self.x, self.y, self.heading)

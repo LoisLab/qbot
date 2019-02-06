@@ -44,7 +44,7 @@ class QHwBot_28byj(QBot):
 
     def changes_distance(self, action):
         return action == 0
-        
+
     def get_observation(self,_=None):   # second parameter applies only to virtual robots
         observation = []
         target = self.sensor_sectors//2 * self.degrees_per_sensor_sector
@@ -62,3 +62,6 @@ class QHwBot_28byj(QBot):
 
     def goal(self):
         return 100.0            # millimeters
+
+    def max_sensor_range(self):
+        return self.lidar.max_sensor_range(self):

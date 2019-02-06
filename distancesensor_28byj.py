@@ -39,7 +39,5 @@ class DistanceSensor:
         self.lidar.stop_ranging() # Stop ranging
         return distance_in_mm
 
-
-
-
-
+    def max_sensor_range(self):
+        return 4000 # 4 meters

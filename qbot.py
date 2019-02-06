@@ -22,7 +22,8 @@ class QBot:
         return 3                    # turn left, turn right, move forward
 
     def observation_space(self):
-        return self.sensor_sectors  # the number of sensor readings per sweep
+        return self.sensor_sectors + 1 # the number of sensor readings per sweep
+                                       # plus 1 for 'no object detected'
 
     def sample(self):
         return np.random.randint(self.action_space())
