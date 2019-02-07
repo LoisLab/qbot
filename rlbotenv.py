@@ -15,7 +15,8 @@ from obstacle import Obstacle
 
 class RlBotEnv:
 
-    MAX_ITERATIONS = 2000
+    MAX_ITERATIONS = 500
+    MAX_REWARD = 100
 
     def __init__(self, bot):
         self.bot = bot        # could be a physical or virtual robot
@@ -42,6 +43,7 @@ class RlBotEnv:
         self.bot.move(action)
         obs = self.bot.get_observation(self.obstacles)
         reward = self.min_distance-min(obs) # reward = reduction in distance
+        reward = max(min(reward, RlBotEnv.MAX_REWARD), -RlBotEnv.MAX_REWARD)
         self.min_distance = min(obs)        # for use in next call to step()
         state = self.get_discrete_observation(obs)   # convert to discrete state
         done = min(obs) < self.bot.goal() or self.iterations > RlBotEnv.MAX_ITERATIONS
