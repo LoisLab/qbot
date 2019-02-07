@@ -46,5 +46,5 @@ class RlBotEnv:
         reward = max(min(reward, RlBotEnv.MAX_REWARD), -RlBotEnv.MAX_REWARD)
         self.min_distance = min(obs)        # for use in next call to step()
         state = self.get_discrete_observation(obs)   # convert to discrete state
-        done = min(obs) < self.bot.goal() or self.iterations > RlBotEnv.MAX_ITERATIONS
+        done = min(obs) < self.bot.goal() or self.iterations == RlBotEnv.MAX_ITERATIONS
         return state, reward, done
