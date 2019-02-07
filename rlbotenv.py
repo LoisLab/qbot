@@ -41,11 +41,8 @@ class RlBotEnv:
         self.iterations += 1
         self.bot.move(action)
         obs = self.bot.get_observation(self.obstacles)
-        if self.bot.changes_distance(action):   # ignore sensor-based changes
-            reward = self.min_distance-min(obs) # reward = reduction in distance
-            self.min_distance = min(obs)        # for use in next call to step()
-        else:
-            reward = 0
+        reward = self.min_distance-min(obs) # reward = reduction in distance
+        self.min_distance = min(obs)        # for use in next call to step()
         state = self.get_discrete_observation(obs)   # convert to discrete state
         done = min(obs) < self.bot.goal() or self.iterations > RlBotEnv.MAX_ITERATIONS
         return state, reward, done

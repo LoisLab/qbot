@@ -31,9 +31,6 @@ class QvBot(QBot):
         self.n_heading %= self.turn_sectors
         self.heading = self.n_heading * (math.pi * 2.0 / self.turn_sectors)
 
-    def changes_distance(self, action):
-        return action == 0
-
     # distance to center point x,y of an obstacle
     def distance_to_ob(self, ob):
         return self.distance(ob.x,ob.y) - ob.radius

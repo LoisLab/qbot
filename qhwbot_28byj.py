@@ -42,9 +42,6 @@ class QHwBot_28byj(QBot):
             self.stepper2.set_target(rotation_degrees)
         self.motors.move()
 
-    def changes_distance(self, action):
-        return action == 0
-
     def get_observation(self,_=None):   # second parameter applies only to virtual robots
         observation = []
         target = self.sensor_sectors//2 * self.degrees_per_sensor_sector
