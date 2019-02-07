@@ -29,7 +29,7 @@ def sample(memory):
     episode = memory[np.random.randint(n+1)]
     return episode[np.random.randint(len(episode))]
 
-env = RlBotEnv(QvBot(sensor_sectors=5,degrees_per_sensor_sector=22.5,turn_sectors=8))
+env = RlBotEnv(QvBot(sensor_sectors=1,degrees_per_sensor_sector=12,turn_sectors=180))
 
 alpha = 0.01
 gamma = 0.99
@@ -68,12 +68,16 @@ for m in range(10):
         policy_prime = sig_prime(policy_output)
         weights[state][action] = (1-alpha) * weights[state][action] + alpha*policy_prime[action]*fwd_reward
 
-r = Renderer()
-for trial in range(10):
-    state = env.reset(obstacle_count=1)
-    r.render_reset(env, raytrace=True)
-    done = False
-    while not done:
-        action = policy(state,input_size,weights)[2]
-        state, reward, done = env.step(action)
-        r.render_step(env.bot)
+try:
+    r = Renderer()
+    for trial in range(10):
+        state = env.reset(obstacle_count=1)
+        r.render_reset(env, raytrace=True)
+        done = False
+        while not done:
+            action = policy(state,input_size,weights)[2]
+            state, reward, done = env.step(action)
+            r.render_step(env.bot)
+
+except KeyboardInterrupt:
+    print(weights)
